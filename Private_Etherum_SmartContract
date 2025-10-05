@@ -1,0 +1,32 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract PrivateData
+{
+    address private owner;
+    string private secretData;
+
+    constructor()
+    {
+        owner = msg.sender;   // Deployer become the owner
+    }
+
+// Modifier to restrict acess
+    modifier onlyowner()
+        {
+          require(msg.sender==owner,"Acess Denied");
+          _;
+        }
+
+// Store Private Data
+function stroreSecret(string memory _secret) public onlyowner{
+    secretData=_secret;
+}
+
+// Reterive private Data
+function privateData() public view onlyowner returns(string memory)
+{
+    return secretData;
+}
+
+}
