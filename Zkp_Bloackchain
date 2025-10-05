@@ -1,0 +1,42 @@
+import hashlib
+import random
+# === Blockcahin Structure ===
+class Bloack:
+  def __init__(self, index, prev_hash, transaction, proof):
+    self.index = index
+    self.prev_hash = prev_hash
+    self.transaction = transaction
+    self.proof = proof
+    self.hash = self.calculate_hash()
+  
+  def calculate_hash(self):
+    data = str(self.index) + str(self.prev_hash) + str(self.transaction) + str(self.proof)
+    return hashlib.sha256(data.encode()).hexdigest()
+  
+# === Zkp simulation ===
+
+def generate_zkp(secret, challenge):
+  return hashlib.sha256((secret + str(challenge)).encode()).hexdigest()
+
+def verfiy_zkp(secret, challenge, proof):
+  return proof == generate_zkp(secret, challenge)
+                 
+# === Demo Transaction With ZKP ===
+secret="Sujal@2004"
+challenge=random.randint(1,100)
+proof=generate_zkp(secret, challenge)
+print("Proof generated:", proof)
+
+if verfiy_zkp(secret, challenge, proof):
+  print("ZKP verified successfully")
+else:
+  print("ZKP verification failed")
+
+# == Add Bloackcahin ==
+gensis_block = Bloack(0, "0", "Gensis Block", 1234)
+new_block = Bloack(1,gensis_block.hash,"Text with zkp",proof)
+
+print("Gensis Block Hash:", gensis_block.hash)
+print("New Block Hash:", new_block.hash)
+print("Transaction added with privacy")
+                 
