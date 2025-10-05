@@ -1,0 +1,23 @@
+import hashlib
+import random
+
+# Provers Secret
+secret="Sujal@2004"
+commitment=hashlib.sha256(secret.encode()).hexdigest()
+print("Commitment send to the verifier:",commitment)
+
+# verfier sends random challenge 
+challenge=random.randint(1,10)
+print("Challenge sent to the prover:",challenge)
+
+# prover respond based on the secret and challenge
+response=hashlib.sha256((secret+str(challenge)).encode()).hexdigest()
+print("prover response:", response);
+
+# verfier checks correctness
+verfiy=hashlib.sha256((secret+str(challenge)).encode()).hexdigest()
+
+if(verfiy==response):
+  print("ZKP verified successfully")
+else:
+  print("ZKP verification failed")
