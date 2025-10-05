@@ -1,0 +1,32 @@
+import hashlib
+import random
+import time
+
+# Test ZKps performance 
+
+# === generate zkp Function ===
+def generate_zkp(secret, challenge):
+  return hashlib.sha256((secret + str(challenge)).encode()).hexdigest()
+
+# === Verfiy zkp function ===
+def verfiy_zkp(secret, challenge, proof):
+  return proof == generate_zkp(secret, challenge)
+
+# === performance Test ===
+
+secret="Sujal@2004"
+
+for i in range(5): # Run multi times
+  challenge = random.randint(1,100) 
+
+  start_gen = time.time()
+  proof=generate_zkp(secret, challenge)
+  end_gen = time.time()
+
+  start_ver = time.time()
+  verfiy_zkp(secret, challenge, proof)
+  end_ver = time.time()
+  
+  print(f"\n trialn {i+1}")
+  print("Generation Time:", round((end_gen - start_gen)*1000, 4),"ms")
+  print("Verification Time:",round((end_ver - start_ver)*1000,4),"ms")
